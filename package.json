@@ -1,0 +1,13 @@
+{
+    "name"    : "reversi",
+    "version" : "0.0.1",
+    "private" : true,
+    "dependencies" : {
+        "redis"   : "*",
+        "express" : "*",
+        "socket.io" : "*",
+        "underscore" : "*",
+        "mocha" : "*",
+        "requirejs" : "*"
+    }
+}
