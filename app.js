@@ -28,20 +28,24 @@ io.sockets.on('connection', function(socket) {
 });
 
 function reload() {
+    if( game.finished ) {
+        io.sockets.emit('reload', game);
+        io.sockets.emit('gameend', game.getFinishStatus());
+        return;
+    }
     if( game.canPutFlag ) {
         io.sockets.emit('reload', game);
     } else {
         io.sockets.emit('reload', game);
         game.changePlayer();
         if( game.canPutFlag ) {
-            console.log('pass');
+            io.sockets.emit('passes');
             setTimeout(function(){
-                io.sockets.emit('pass');
                 reload();
-            }, 1000);
+            }, 1500);
         } else {
-            io.sockets.emit('reload', game);
-            io.sockets.emit('gameend');
+            game.finished = true;
+            reload();
         }
     }
 }

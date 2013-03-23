@@ -8,25 +8,16 @@ define(function() {
             this.scene = new Scene();
             this.assets = game.assets;
             this.setBoard();
-            boardSprite = new Sprite(450, 450);
-            boardSprite.image = this.assets['/public/img/board.png'];
-            this.scene.addChild(boardSprite);
             this.setScoreBoard();
-            boardSprite.addEventListener('touchend', function(e) {
-                var x = Math.floor(e.x / 56);
-                var y = Math.floor(e.y / 56);
-                if( self.board[y][x] == 1 ) {
-                    self.putPiece(self.turn, y, x);
-                    self.socket.emit('put', {"y":y, "x":x});
-                }
-            });
             socket.on('reload', function(data) {
-                console.log(data);
-                playerSprite.visible = true;
+                console.log('reload');
+                self.passesLabel.visible = false;
+                self.playerSprite.visible = true;
+                self.setFinishVisible(false);
                 if( data.player == 100 ) {
-                    playerSprite.frame = 3;
+                    self.playerSprite.frame = 3;
                 }else{
-                    playerSprite.frame = 0;
+                    self.playerSprite.frame = 0;
                 }
 
                 for( var y=0; y<8; y++ ){
@@ -51,23 +42,76 @@ define(function() {
                 self.player = data.player;
             });
             socket.on('gameend', function(data) {
-                playerSprite.visible = false;
-            });
-            socket.on('pass', function(data) {
+                self.playerSprite.visible = false;
+                self.setFinishVisible(true);
+                self.whiteCountLabel.text = data.whiteCount;
+                self.blackCountLabel.text = data.blackCount;
                 console.log(data);
+            });
+            socket.on('passes', function(data) {
+                console.log('passes');
+                self.passesLabel.visible = true;
             });
 
         },
         setScoreBoard: function() {
-            scoreSprite = new Sprite(150, 450);
-            scoreSprite.x = 450;
-            scoreSprite.backgroundColor = '#AAAAAA';
-            playerSprite = new Sprite(48, 49);
-            playerSprite.image = this.assets['/public/img/tile.png'];
-            playerSprite.x = 500;
-            playerSprite.y = 100;
-            this.scene.addChild(scoreSprite);
-            this.scene.addChild(playerSprite);
+            this.scoreSprite = new Sprite(150, 450);
+            this.scoreSprite.x = 450;
+            this.scoreSprite.backgroundColor = '#AAAAAA';
+            this.playerSprite = new Sprite(48, 49);
+            this.playerSprite.image = this.assets['/public/img/tile.png'];
+            this.playerSprite.x = 500;
+            this.playerSprite.y = 100;
+            this.playerLabel = new Label("Player");
+            this.playerLabel.font = "16px Arial";
+            this.playerLabel.x = 500;
+            this.playerLabel.y = 75;
+            this.passesLabel = new Label("Passes");
+            this.passesLabel.font = "32px Arial";
+            this.passesLabel.color = "#FFFD11";
+            this.passesLabel.x = 470;
+            this.passesLabel.y = 160;
+            this.passesLabel.visible = false;
+            this.finishedLabel = new Label("Game <br/>Finished");
+            this.finishedLabel.font = "22px Arial";
+            this.finishedLabel.color = "#FFFD11";
+            this.finishedLabel.x = 470;
+            this.finishedLabel.y = 170;
+
+            this.whiteCountLabel = new Label(20);
+            this.whiteCountLabel.font = "22px Arial";
+            this.whiteCountLabel.x = 530
+            this.whiteCountLabel.y = 240
+            this.whiteCountSprite = new Sprite(48, 49);
+            this.whiteCountSprite.image = this.assets['/public/img/tile.png'];
+            this.whiteCountSprite.x = 470;
+            this.whiteCountSprite.y = 230;
+            this.whiteCountSprite.frame = 0;
+            this.blackCountLabel = new Label(10);
+            this.blackCountLabel.font = "22px Arial";
+            this.blackCountLabel.x = 530;
+            this.blackCountLabel.y = 300;
+            this.blackCountSprite = new Sprite(48, 49);
+            this.blackCountSprite.image = this.assets['/public/img/tile.png'];
+            this.blackCountSprite.x = 470;
+            this.blackCountSprite.y = 290;
+            this.blackCountSprite.frame = 3;
+            this.scene.addChild(this.scoreSprite);
+            this.scene.addChild(this.playerSprite);
+            this.scene.addChild(this.playerLabel);
+            this.scene.addChild(this.passesLabel);
+            this.scene.addChild(this.whiteCountLabel);
+            this.scene.addChild(this.blackCountLabel);
+            this.scene.addChild(this.whiteCountSprite);
+            this.scene.addChild(this.blackCountSprite);
+            this.scene.addChild(this.finishedLabel);
+        },
+        setFinishVisible: function(bool) {
+            this.blackCountLabel.visible = bool;
+            this.whiteCountLabel.visible = bool;
+            this.blackCountSprite.visible = bool;
+            this.whiteCountSprite.visible = bool;
+            this.finishedLabel.visible = bool;
         },
         getScene: function() {
             return this.scene;
@@ -78,6 +122,8 @@ define(function() {
             this.scene.addChild(piece);
         },
         setBoard: function() {
+            var self = this;
+
             this.turn = BLACK;
             this.board = [
                 [0,0,0,0,0,0,0,0],
@@ -89,11 +135,24 @@ define(function() {
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0]
             ];
+            this.boardSprite = new Sprite(450, 450);
+            this.boardSprite.image = this.assets['/public/img/board.png'];
+            this.scene.addChild(this.boardSprite);
+
+            this.boardSprite.addEventListener('touchend', function(e) {
+                var x = Math.floor(e.x / 56);
+                var y = Math.floor(e.y / 56);
+                if( self.board[y][x] == 1 ) {
+                    self.putPiece(self.turn, y, x);
+                    self.socket.emit('put', {"y":y, "x":x});
+                }
+            });
+
         },
     });
 
     var Piece = enchant.Class.create(enchant.Sprite, {
-        initialize:function(image, color, x, y) {
+        initialize: function(image, color, x, y) {
             enchant.Sprite.call(this, 48, 49);
             this.image = image;
             if( color == WHITE ) {
@@ -106,8 +165,7 @@ define(function() {
             this.y = y * 56 + 4;
             this.x = x * 56 + 5;
         },
-        turn:function() {
-            console.log(this.color);
+        turn: function() {
             if( this.color == WHITE ) {
                 this.color = BLACK;
                 this.frame = [0,1,2,3,null];

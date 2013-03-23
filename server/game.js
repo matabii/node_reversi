@@ -22,6 +22,7 @@ var Game = function() {
             [0,0,0,0,0,0,0,0],
         ];
         this.canPutFlag = true;
+        this.finished = false;
     }
 
     /**
@@ -130,6 +131,21 @@ var Game = function() {
             // increment count.
             count++;
         }
+    }
+
+    this.getFinishStatus = function() {
+        var blackCount = 0;
+        var whiteCount = 0;
+        for( var y=0; y<8; y++ ){
+            for( var x=0; x<8; x++ ){
+                if( this.board[y][x] === B ) {
+                    blackCount++;
+                }else if( this.board[y][x] === W ){
+                    whiteCount++;
+                }
+            }
+        }
+        return {"blackCount":blackCount, "whiteCount":whiteCount};
     }
 };
 
