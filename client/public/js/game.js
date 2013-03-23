@@ -143,7 +143,7 @@ define(function() {
                 var x = Math.floor(e.x / 56);
                 var y = Math.floor(e.y / 56);
                 if( self.board[y][x] == 1 ) {
-                    self.putPiece(self.turn, y, x);
+                    self.putPiece(self.player, y, x);
                     self.socket.emit('put', {"y":y, "x":x});
                 }
             });
