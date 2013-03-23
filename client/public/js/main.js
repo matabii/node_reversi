@@ -34,9 +34,14 @@ requirejs([
     game.start();
     $('#reset').click(function() {
         if( !connected ) {
-            console.log('re connect');
             socket.connect();
         }
         socket.emit('reset');
     });
+    $('#reload').click(function() {
+        if( !connected ) {
+            socket.connect();
+        }
+    });
+
 });
