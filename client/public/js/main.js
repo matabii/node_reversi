@@ -31,6 +31,15 @@ requirejs([
             console.log('disconnect');
             connected = false;
         });
+        socket.on('lobby/sit', function(data) {
+            if( game.currentScene.name != "lobby" ) {
+                socket.emit('reload');
+                return;
+            }
+            var lobbyScene = lobby.getScene();
+            console.log('sitdown');
+        });
+
         socket.on('reload', function(data) {
             if( data.stage == "lobby" ) {
                 if( game.currentScene.name != "lobby" ) {
@@ -44,6 +53,10 @@ requirejs([
                 }
                 board.reload(data);
             }
+        });
+        socket.on('game/passes', function() {
+            console.log('passes');
+            board.passes();
         });
         socket.on('game/end', function(data) {
             board.end(data);

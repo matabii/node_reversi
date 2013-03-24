@@ -46,7 +46,21 @@ describe('Game.js', function(){
             assert.equal(game.scan(7, 3, -1, 1), 0);
             assert.equal(game.scan(7, 3, -1, -1), 0);
             
-        })
+        });
+        it('put black 3', function(){
+            game.player = B;
+            game.board = [
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,1,0],
+                [0,0,0,0,B,W,W,1],
+                [0,0,0,B,B,W,1,0],
+                [0,0,0,W,W,W,B,0],
+                [0,0,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0],
+            ];
+            assert.equal(game.scan(1, 6, 1, 0), 0);
+        });
     });
     describe('scan', function(){
         it('put black 1', function(){

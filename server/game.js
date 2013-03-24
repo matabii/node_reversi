@@ -29,6 +29,9 @@ var Game = function() {
         this.finished = false;
     }
 
+    this.setPlayer = function(color, id, name) {
+    }
+
     /**
        put player disk position y and x grid.
        and turned over
@@ -125,7 +128,7 @@ var Game = function() {
                 // out of range.
                 return 0;
             }
-            if( this.board[y + dy * count][x + dx * count] === 0 || this.board[y + dy * count][x + dx * count] === 0 ) {
+            if( this.board[y + dy * count][x + dx * count] === 0 || this.board[y + dy * count][x + dx * count] === 1 ) {
                 // empty
                 return 0;
             }

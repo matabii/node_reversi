@@ -51,6 +51,7 @@ define(function() {
             self.blackCountLabel.text = data.blackCount;
         },
         passes: function(data) {
+            var self = this;
             self.passesLabel.visible = true;
         },
         setScoreBoard: function() {

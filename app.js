@@ -18,6 +18,9 @@ game.reset();
 io.sockets.on('connection', function(socket) {
     reload(true);
 
+    socket.on('lobby/sit', function() {
+        socket.emit('lobby/sit');
+    });
     socket.on('lobby/start', function() {
         game.stage = "game";
         console.log(game.stage);
