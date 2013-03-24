@@ -21,7 +21,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('lobby/start', function() {
         game.stage = "game";
         console.log(game.stage);
-        reload(true);
+        reload();
     });
     socket.on('game/put', function(data) {
         game.put( data.y, data.x );
