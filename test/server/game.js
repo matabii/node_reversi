@@ -100,45 +100,45 @@ describe('Game.js', function(){
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(2, 0));
-            assert.ok(!game.isPut(2, 1));
-            assert.ok(!game.isPut(2, 2));
-            assert.ok(!game.isPut(2, 3));
-            assert.ok(!game.isPut(1, 4));
-            assert.ok(!game.isPut(0, 4));
-            assert.ok(!game.isPut(0, 5));
-            assert.ok(!game.isPut(1, 5));
-            assert.ok(!game.isPut(2, 5));
-            assert.ok(game.isPut(3, 5));
-            assert.ok(!game.isPut(4, 5));
-            assert.ok(!game.isPut(5, 5));
-            assert.ok(!game.isPut(6, 5));
-            assert.ok(!game.isPut(7, 5));
-            assert.ok(!game.isPut(0, 6));
-            assert.ok(!game.isPut(1, 6));
-            assert.ok(!game.isPut(2, 6));
-            assert.ok(!game.isPut(3, 6));
-            assert.ok(!game.isPut(4, 6));
-            assert.ok(!game.isPut(5, 6));
-            assert.ok(!game.isPut(6, 6));
-            assert.ok(!game.isPut(7, 6));
-            assert.ok(!game.isPut(0, 7));
-            assert.ok(!game.isPut(1, 7));
-            assert.ok(!game.isPut(2, 7));
-            assert.ok(!game.isPut(3, 7));
-            assert.ok(!game.isPut(4, 7));
-            assert.ok(!game.isPut(5, 7));
-            assert.ok(!game.isPut(6, 7));
-            assert.ok(!game.isPut(7, 7));
+            assert.ok(!game.canPut(2, 0));
+            assert.ok(!game.canPut(2, 1));
+            assert.ok(!game.canPut(2, 2));
+            assert.ok(!game.canPut(2, 3));
+            assert.ok(!game.canPut(1, 4));
+            assert.ok(!game.canPut(0, 4));
+            assert.ok(!game.canPut(0, 5));
+            assert.ok(!game.canPut(1, 5));
+            assert.ok(!game.canPut(2, 5));
+            assert.ok(game.canPut(3, 5));
+            assert.ok(!game.canPut(4, 5));
+            assert.ok(!game.canPut(5, 5));
+            assert.ok(!game.canPut(6, 5));
+            assert.ok(!game.canPut(7, 5));
+            assert.ok(!game.canPut(0, 6));
+            assert.ok(!game.canPut(1, 6));
+            assert.ok(!game.canPut(2, 6));
+            assert.ok(!game.canPut(3, 6));
+            assert.ok(!game.canPut(4, 6));
+            assert.ok(!game.canPut(5, 6));
+            assert.ok(!game.canPut(6, 6));
+            assert.ok(!game.canPut(7, 6));
+            assert.ok(!game.canPut(0, 7));
+            assert.ok(!game.canPut(1, 7));
+            assert.ok(!game.canPut(2, 7));
+            assert.ok(!game.canPut(3, 7));
+            assert.ok(!game.canPut(4, 7));
+            assert.ok(!game.canPut(5, 7));
+            assert.ok(!game.canPut(6, 7));
+            assert.ok(!game.canPut(7, 7));
 
-            assert.ok(game.isPut(2, 4));
-            assert.ok(game.isPut(3, 5));
-            assert.ok(game.isPut(4, 2));
-            assert.ok(game.isPut(5, 3));
+            assert.ok(game.canPut(2, 4));
+            assert.ok(game.canPut(3, 5));
+            assert.ok(game.canPut(4, 2));
+            assert.ok(game.canPut(5, 3));
         });
     });
 
-    describe('isPut', function(){
+    describe('canPut', function(){
         it('put black 2', function(){
             game.player = B;
             game.board = [
@@ -151,50 +151,50 @@ describe('Game.js', function(){
                 [0,W,0,0,0,0,0,W],
                 [B,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(0, 0));
-            assert.ok(!game.isPut(0, 1));
-            assert.ok(game.isPut(0, 2));
-            assert.ok(!game.isPut(0, 3));
-            assert.ok(!game.isPut(0, 4));
-            assert.ok(!game.isPut(0, 5));
-            assert.ok(!game.isPut(0, 6));
-            assert.ok(!game.isPut(0, 7));
-            assert.ok(!game.isPut(1, 0));
-            assert.ok(!game.isPut(1, 1));
-            assert.ok(!game.isPut(1, 2));
-            assert.ok(!game.isPut(1, 3));
-            assert.ok(!game.isPut(1, 4));
-            assert.ok(!game.isPut(1, 5));
-            assert.ok(!game.isPut(1, 6));
-            assert.ok(!game.isPut(1, 7));
-            assert.ok(game.isPut(2, 0));
-            assert.ok(!game.isPut(2, 1));
-            assert.ok(!game.isPut(2, 2));
-            assert.ok(!game.isPut(2, 3));
-            assert.ok(game.isPut(2, 4));
-            assert.ok(!game.isPut(2, 5));
-            assert.ok(!game.isPut(2, 6));
-            assert.ok(!game.isPut(2, 7));
-            assert.ok(!game.isPut(3, 0));
-            assert.ok(!game.isPut(3, 1));
-            assert.ok(!game.isPut(3, 2));
-            assert.ok(!game.isPut(3, 3));
-            assert.ok(!game.isPut(3, 4));
-            assert.ok(game.isPut(3, 5));
-            assert.ok(!game.isPut(3, 6));
-            assert.ok(!game.isPut(3, 7));
-            assert.ok(!game.isPut(7, 0));
-            assert.ok(!game.isPut(7, 1));
-            assert.ok(!game.isPut(7, 2));
-            assert.ok(!game.isPut(7, 3));
-            assert.ok(!game.isPut(7, 4));
-            assert.ok(!game.isPut(7, 5));
-            assert.ok(!game.isPut(7, 6));
-            assert.ok(game.isPut(7, 7));
+            assert.ok(!game.canPut(0, 0));
+            assert.ok(!game.canPut(0, 1));
+            assert.ok(game.canPut(0, 2));
+            assert.ok(!game.canPut(0, 3));
+            assert.ok(!game.canPut(0, 4));
+            assert.ok(!game.canPut(0, 5));
+            assert.ok(!game.canPut(0, 6));
+            assert.ok(!game.canPut(0, 7));
+            assert.ok(!game.canPut(1, 0));
+            assert.ok(!game.canPut(1, 1));
+            assert.ok(!game.canPut(1, 2));
+            assert.ok(!game.canPut(1, 3));
+            assert.ok(!game.canPut(1, 4));
+            assert.ok(!game.canPut(1, 5));
+            assert.ok(!game.canPut(1, 6));
+            assert.ok(!game.canPut(1, 7));
+            assert.ok(game.canPut(2, 0));
+            assert.ok(!game.canPut(2, 1));
+            assert.ok(!game.canPut(2, 2));
+            assert.ok(!game.canPut(2, 3));
+            assert.ok(game.canPut(2, 4));
+            assert.ok(!game.canPut(2, 5));
+            assert.ok(!game.canPut(2, 6));
+            assert.ok(!game.canPut(2, 7));
+            assert.ok(!game.canPut(3, 0));
+            assert.ok(!game.canPut(3, 1));
+            assert.ok(!game.canPut(3, 2));
+            assert.ok(!game.canPut(3, 3));
+            assert.ok(!game.canPut(3, 4));
+            assert.ok(game.canPut(3, 5));
+            assert.ok(!game.canPut(3, 6));
+            assert.ok(!game.canPut(3, 7));
+            assert.ok(!game.canPut(7, 0));
+            assert.ok(!game.canPut(7, 1));
+            assert.ok(!game.canPut(7, 2));
+            assert.ok(!game.canPut(7, 3));
+            assert.ok(!game.canPut(7, 4));
+            assert.ok(!game.canPut(7, 5));
+            assert.ok(!game.canPut(7, 6));
+            assert.ok(game.canPut(7, 7));
         });
     });
 
-    describe('isPut', function(){
+    describe('canPut', function(){
         it('put black 3', function(){
             game.player = B;
             game.board = [
@@ -207,11 +207,11 @@ describe('Game.js', function(){
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(0, 6));
+            assert.ok(!game.canPut(0, 6));
         })
     });
 
-    describe('isPut', function(){
+    describe('canPut', function(){
         it('put black 4', function(){
             game.player = B;
             game.board = [
@@ -224,11 +224,11 @@ describe('Game.js', function(){
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(2, 3));
+            assert.ok(!game.canPut(2, 3));
         })
     });
 
-    describe('isPut', function(){
+    describe('canPut', function(){
         it('put black 5', function(){
             game.player = B;
             game.board = [
@@ -241,12 +241,12 @@ describe('Game.js', function(){
                 [0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(0, 4));
+            assert.ok(!game.canPut(0, 4));
         })
     });
 
 
-    describe('isPut', function(){
+    describe('canPut', function(){
         it('put white 1', function(){
             game.player = W;
             game.board = [
@@ -259,32 +259,32 @@ describe('Game.js', function(){
                 [0,W,0,0,0,0,0,W],
                 [B,0,0,0,0,0,0,0],
             ];
-            assert.ok(!game.isPut(0, 0));
-            assert.ok(!game.isPut(0, 1));
-            assert.ok(!game.isPut(0, 2));
-            assert.ok(!game.isPut(0, 3));
-            assert.ok(!game.isPut(0, 4));
-            assert.ok(!game.isPut(0, 5));
-            assert.ok(!game.isPut(0, 6));
-            assert.ok(!game.isPut(0, 7));
+            assert.ok(!game.canPut(0, 0));
+            assert.ok(!game.canPut(0, 1));
+            assert.ok(!game.canPut(0, 2));
+            assert.ok(!game.canPut(0, 3));
+            assert.ok(!game.canPut(0, 4));
+            assert.ok(!game.canPut(0, 5));
+            assert.ok(!game.canPut(0, 6));
+            assert.ok(!game.canPut(0, 7));
 
-            assert.ok(!game.isPut(1, 0));
-            assert.ok(!game.isPut(1, 1));
-            assert.ok(game.isPut(1, 2));
-            assert.ok(!game.isPut(1, 3));
-            assert.ok(!game.isPut(1, 4));
-            assert.ok(!game.isPut(1, 5));
-            assert.ok(!game.isPut(1, 6));
-            assert.ok(!game.isPut(1, 7));
+            assert.ok(!game.canPut(1, 0));
+            assert.ok(!game.canPut(1, 1));
+            assert.ok(game.canPut(1, 2));
+            assert.ok(!game.canPut(1, 3));
+            assert.ok(!game.canPut(1, 4));
+            assert.ok(!game.canPut(1, 5));
+            assert.ok(!game.canPut(1, 6));
+            assert.ok(!game.canPut(1, 7));
 
-            assert.ok(!game.isPut(2, 0));
-            assert.ok(game.isPut(2, 1));
-            assert.ok(!game.isPut(2, 2));
-            assert.ok(game.isPut(2, 3));
-            assert.ok(!game.isPut(2, 4));
-            assert.ok(!game.isPut(2, 5));
-            assert.ok(!game.isPut(2, 6));
-            assert.ok(!game.isPut(2, 7));
+            assert.ok(!game.canPut(2, 0));
+            assert.ok(game.canPut(2, 1));
+            assert.ok(!game.canPut(2, 2));
+            assert.ok(game.canPut(2, 3));
+            assert.ok(!game.canPut(2, 4));
+            assert.ok(!game.canPut(2, 5));
+            assert.ok(!game.canPut(2, 6));
+            assert.ok(!game.canPut(2, 7));
 
         });
     });

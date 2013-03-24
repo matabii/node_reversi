@@ -56,6 +56,7 @@ var Game = function() {
         }
         // change player
         this.changePlayer();
+        return true;
     }
 
     this.changePlayer = function() {
