@@ -16,8 +16,14 @@ game = new Game();
 game.reset();
 
 io.sockets.on('connection', function(socket) {
-    reload();
-    socket.on('put', function(data) {
+    reload(true);
+
+    socket.on('lobby/start', function() {
+        game.stage = "game";
+        console.log(game.stage);
+        reload(true);
+    });
+    socket.on('game/put', function(data) {
         game.put( data.y, data.x );
         reload();
     });
@@ -25,27 +31,40 @@ io.sockets.on('connection', function(socket) {
         game.reset();
         reload();
     });
-});
+    socket.on('reload', function(data) {
+        console.log('reload');
+        reload(true);
+    });
 
-function reload() {
-    if( game.finished ) {
-        io.sockets.emit('reload', game);
-        io.sockets.emit('gameend', game.getFinishStatus());
-        return;
-    }
-    if( game.canPutFlag ) {
-        io.sockets.emit('reload', game);
-    } else {
-        io.sockets.emit('reload', game);
-        game.changePlayer();
-        if( game.canPutFlag ) {
-            io.sockets.emit('passes');
-            setTimeout(function(){
-                reload();
-            }, 1500);
-        } else {
-            game.finished = true;
-            reload();
+    function reload(isOnlySelf) {
+        var s = io.sockets;
+        if( isOnlySelf ){
+            s = socket;
+        }
+        if( game.stage == "lobby" ){
+            s.emit('reload', game);
+        } else if (game.stage == "game" ){
+            if( game.finished ) {
+                s.emit('reload', game);
+                s.emit('game/end', game.getFinishStatus());
+                return;
+            }
+            if( game.canPutFlag ) {
+                s.emit('reload', game);
+            } else {
+                s.emit('reload', game);
+                game.changePlayer();
+                if( game.canPutFlag ) {
+                    s.emit('game/passes');
+                    setTimeout(function(){
+                        reload();
+                    }, 1500);
+                } else {
+                    game.finished = true;
+                    reload();
+                }
+            }
         }
     }
-}
+});
+

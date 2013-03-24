@@ -3,7 +3,11 @@ var Game = function() {
     var B = 100; // Black disks
     var W = 200; // White disks
 
+    var STAGE_LOBBY = "lobby";
+    var STAGE_GAME = "game";
+
     this.reset = function() {
+        this.stage = "lobby";
         this.player = B; // player is Black or White.
         /**
            0 : empty

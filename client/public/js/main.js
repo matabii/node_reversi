@@ -3,13 +3,16 @@ requirejs.config({
     shim: {
         "game" : {
             deps: ["thirdparty/enchant"]
-        }
+        },
+        "lobby" : {
+            deps: ["thirdparty/enchant"]
+        },
     }
 });
 
 requirejs([
-    "game", "thirdparty/jquery", "thirdparty/underscore", "thirdparty/enchant", "thirdparty/socket.io"
-], function(g) {
+    "game", "lobby", "thirdparty/jquery", "thirdparty/underscore", "thirdparty/enchant", "thirdparty/socket.io"
+], function(g,l) {
     enchant();
     var game = new Game(600, 450);
     var board;
@@ -28,8 +31,28 @@ requirejs([
             console.log('disconnect');
             connected = false;
         });
+        socket.on('reload', function(data) {
+            if( data.stage == "lobby" ) {
+                if( game.currentScene.name != "lobby" ) {
+                    game.popScene();
+                    game.pushScene( lobbyScene );
+                }
+            }else if( data.stage == "game" ) {
+                if( game.currentScene.name != "board" ) {
+                    game.popScene();
+                    game.pushScene( board.getScene() );
+                }
+                board.reload(data);
+            }
+        });
+        socket.on('game/end', function(data) {
+            board.end(data);
+        });
+
+        lobby = new l.Lobby(game, socket);
         board = new g.Board(game, socket);
-        game.pushScene(board.getScene());
+        var boardScene = board.getScene();
+        var lobbyScene = lobby.getScene();
     }
     game.start();
     $('#reset').click(function() {
@@ -42,6 +65,7 @@ requirejs([
         if( !connected ) {
             socket.connect();
         }
+        socket.emit('reload');
     });
 
 });

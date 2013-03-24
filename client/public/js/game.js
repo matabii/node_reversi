@@ -9,50 +9,49 @@ define(function() {
             this.assets = game.assets;
             this.setBoard();
             this.setScoreBoard();
-            socket.on('reload', function(data) {
-                console.log('reload');
-                self.passesLabel.visible = false;
-                self.playerSprite.visible = true;
-                self.setFinishVisible(false);
-                if( data.player == 100 ) {
-                    self.playerSprite.frame = 3;
-                }else{
-                    self.playerSprite.frame = 0;
-                }
+        },
+        reload: function(data) {
+            console.log('reload');
+            var self = this;
+            self.passesLabel.visible = false;
+            self.playerSprite.visible = true;
+            self.setFinishVisible(false);
+            if( data.player == 100 ) {
+                self.playerSprite.frame = 3;
+            }else{
+                self.playerSprite.frame = 0;
+            }
 
-                for( var y=0; y<8; y++ ){
-                    for( var x=0; x<8; x++ ){
-                        if( data.board[y][x] == BLACK || data.board[y][x] == WHITE ){
-                            if ( self.board[y][x] instanceof Piece ) {
-                                if( self.board[y][x].color != data.board[y][x] ){
-                                    self.board[y][x].turn();
-                                }
-                            } else {
-                                self.putPiece( data.board[y][x], y , x );
+            for( var y=0; y<8; y++ ){
+                for( var x=0; x<8; x++ ){
+                    if( data.board[y][x] == BLACK || data.board[y][x] == WHITE ){
+                        if ( self.board[y][x] instanceof Piece ) {
+                            if( self.board[y][x].color != data.board[y][x] ){
+                                self.board[y][x].turn();
                             }
                         } else {
-                            if ( self.board[y][x] instanceof Piece ) {
-                                self.scene.removeChild(self.board[y][x]);
-                            }
-                            self.board[y][x] = data.board[y][x];
+                            self.putPiece( data.board[y][x], y , x );
                         }
+                    } else {
+                        if ( self.board[y][x] instanceof Piece ) {
+                            self.scene.removeChild(self.board[y][x]);
+                        }
+                        self.board[y][x] = data.board[y][x];
                     }
                 }
+            }
 
-                self.player = data.player;
-            });
-            socket.on('gameend', function(data) {
-                self.playerSprite.visible = false;
-                self.setFinishVisible(true);
-                self.whiteCountLabel.text = data.whiteCount;
-                self.blackCountLabel.text = data.blackCount;
-                console.log(data);
-            });
-            socket.on('passes', function(data) {
-                console.log('passes');
-                self.passesLabel.visible = true;
-            });
-
+            self.player = data.player;
+        },
+        end: function(data) {
+            var self = this;
+            self.playerSprite.visible = false;
+            self.setFinishVisible(true);
+            self.whiteCountLabel.text = data.whiteCount;
+            self.blackCountLabel.text = data.blackCount;
+        },
+        passes: function(data) {
+            self.passesLabel.visible = true;
         },
         setScoreBoard: function() {
             this.scoreSprite = new Sprite(150, 450);
@@ -114,7 +113,9 @@ define(function() {
             this.finishedLabel.visible = bool;
         },
         getScene: function() {
-            return this.scene;
+            var scene = this.scene;
+            scene.name = "board";
+            return scene;
         },
         putPiece: function(color, y, x) {
             var piece = new Piece(this.assets['/public/img/tile.png'], color, x, y);
@@ -123,7 +124,6 @@ define(function() {
         },
         setBoard: function() {
             var self = this;
-
             this.turn = BLACK;
             this.board = [
                 [0,0,0,0,0,0,0,0],
@@ -144,7 +144,7 @@ define(function() {
                 var y = Math.floor(e.y / 56);
                 if( self.board[y][x] == 1 ) {
                     self.putPiece(self.player, y, x);
-                    self.socket.emit('put', {"y":y, "x":x});
+                    self.socket.emit('game/put', {"y":y, "x":x});
                 }
             });
 
